@@ -4,8 +4,8 @@
 
 LiquidCrystal lcd(12, 11, 5, 4, 3, 2);
 
-#define RFID_RX_PIN 2
-#define RFID_TX_PIN 3
+#define RFID_RX_PIN 6
+#define RFID_TX_PIN 7
 
 #define TEST
 
@@ -20,13 +20,13 @@ void setup() {
   lcd.setCursor(3 ,0);
   lcd.print("Bem vindo!");
   lcd.setCursor(0, 1);
-  lcd.print("Sistema compras");
+  lcd.print("Sistema compras!");
 }
 
 void loop() { 
   if(RFID.isAvailable()){
     tag = RFID.data();
-    Serial.print("RFID card number: ");
+    Serial.print("Numero da tag: ");
     Serial.println(RFID.cardNumber());
     lcd.clear(); //Limpa Display
     lcd.setCursor(6, 0); //posiciona cursor na coluna 6, linha 0
@@ -35,7 +35,7 @@ void loop() {
     lcd.print("Esperando Tag...");
     delay(5000);
 #ifdef TEST
-  Serial.print("RFID raw data: ");
+  Serial.print("Dado da tag: ");
   lcd.clear();
   lcd.setCursor(0, 0);
   lcd.print("Dado: ");

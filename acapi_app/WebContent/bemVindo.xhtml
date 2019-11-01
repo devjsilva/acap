@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+<ui:composition template="_template2.xhtml">
+
+
+	<ui:define name="titulo">
+		Bem vindo
+	</ui:define>
+	<ui:define name="conteudo">
+	
+<div class="ui-g">
+    <div class="ui-g-8 ui-g-nopad">
+        <div class="ui-g-6"><h:form>
+	
+			
+			<h3 style="color: Silver">Usuario logado</h3>
+			<p:panelGrid columns="2">
+				<f:facet name="header">
+					<p:graphicImage library="img" name="man.png"/>
+				</f:facet>
+
+				<h:outputText value="Nome:" />
+				<h:outputText value="#{sessionScope['usuarioLogado'].nome}" />
+
+				<h:outputText value="Email:" />
+				<h:outputText value="#{sessionScope['usuarioLogado'].usuario}" />
+
+				<h:outputText value="Cpf:" />
+				<h:outputText value="#{sessionScope['usuarioLogado'].cpf}" />
+								
+			</p:panelGrid>
+
+</h:form></div>
+      
+    
+    </div>
+    <div class="ui-g-4">
+    <div style="margin-top: 27%"></div>
+    <p style="color: Silver">DEFINA O TEMA </p>
+
+		<h:form rendered="#{usuarioLogado != null}"
+			style="position:absolute; ">
+			<p:themeSwitcher id="basic" style="width:165px"
+				value="#{temaBean.tema}">
+				<f:selectItem itemLabel="Choose Theme" itemValue="" />
+				<f:selectItems value="#{temaBean.temas}" var="tema"
+					itemLabel="#{tema}" itemValue="#{tema}" />
+				<f:ajax />
+			</p:themeSwitcher>
+</h:form>
+</div>
+</div>
+<br />
+<br />
+	
+	
+
+
+
+
+
+		
+	</ui:define>
+</ui:composition>
+</html>

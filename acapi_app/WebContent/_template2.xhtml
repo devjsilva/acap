@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<h:head />
+
+<h:body>
+
+	<p:layout fullPage="true">
+
+		<p:layoutUnit position="north" size="105">
+
+			
+			
+			<div id="imagem" style="float: left; margin-left: 5%">
+				<h:graphicImage library="img" name="producto.png" />
+			</div>
+			<div id="titulo" style="float: left; margin-left: 40%">
+				<h1 style="color: DodgerBlue">ACAPI</h1>
+			</div>
+
+
+		</p:layoutUnit>
+
+	<p:layoutUnit position="west" size="210" header="Menu"
+			resizable="true" collapsible="true" >
+			
+<div id="menu">
+			<h:form>
+				<p:growl>
+					<p:autoUpdate />
+				</p:growl>
+
+				<p:panelMenu style="width:200px">
+					<p:submenu label="Usuario">
+						<p:menuitem value="Perfil" 
+							action="#{redirecionamento.mudaFormBemVindo}"  icon="pi pi-save" />
+						<p:menuitem value="Deslogar" 
+							action="#{loginBean.deslogar}"  icon="pi pi-refresh" />
+					</p:submenu>
+					<p:separator />
+					<p:submenu label="Navegar">
+
+						<p:menuitem value="Pagina Inicial" 
+							 action="#{redirecionamento.mudaFormBemVindo}" icon="pi pi-home" />
+						<p:menuitem value="Produtos" 
+							 action="#{redirecionamento.mudaFormProduto}" icon="pi pi-home" />
+						<p:menuitem value="Fornecedores" 
+							 action="#{redirecionamento.mudaFormFornecedor}" icon="pi pi-home" />
+						<p:menuitem value="Funcionarios" 
+							 action="#{redirecionamento.mudaFormFuncionario}" icon="pi pi-home" />
+						<p:menuitem value="Carrinhos" 
+							action="#{redirecionamento.mudaFormCarrinho}" icon="pi pi-home" />
+
+					</p:submenu>
+					<p:separator />
+					<p:submenu label="Caixa">
+
+						<p:menuitem value="Vendas" 
+							 action="#{redirecionamento.mudaFormCaixa}" icon="pi pi-home" />
+						</p:submenu>
+					
+
+				</p:panelMenu>
+			</h:form>
+</div>
+			<br />
+
+
+		</p:layoutUnit>
+
+	<p:layoutUnit position="center">
+			<div style=" margin-left: 3%">
+				<h1><ui:insert name="titulo"></ui:insert></h1>
+			</div>
+<br/>
+<div style=" margin-left: 3%">
+			<ui:insert name="conteudo"></ui:insert>
+			</div>
+		</p:layoutUnit>
+	</p:layout>
+</h:body>
+</html>

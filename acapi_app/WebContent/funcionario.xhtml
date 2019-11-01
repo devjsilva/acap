@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template2.xhtml">
+	
+	<ui:define name="titulo">
+		Novo Funcionario
+	</ui:define>
+	<ui:define name="conteudo">
+
+		<h:form id="funcionario">
+			<p:messages globalOnly="true" />
+			<p:fieldset legend="Dados do Funcionario">
+				<h:panelGrid columns="3">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{funcionarioBean.funcionario.nome}"
+						required="true" requiredMessage="Nome obrigatorio!!!"
+						validatorMessage="O nome do produto não pode ultrapassar 40 caracteres">
+						<f:validateLength maximum="40" />
+						<f:ajax event="blur" render="mensageNome" />
+					</p:inputText>
+
+					<p:message for="nome" id="messageNome" />
+
+					<p:outputLabel value="CPF" for="cpf" />
+					<p:inputMask id="cpf" value="#{funcionarioBean.funcionario.cpf}"
+						required="true" requiredMessage="CPF obrigatorio"
+						validatorMessage="O CPF tem que ter 11 dif"  mask="999.999.999-99">
+						<f:validateLength maximum="14" minimum="14" />
+						<f:ajax render="mensageCpf" event="blur" />
+					</p:inputMask>
+
+					<p:message for="cpf" id="messageCpf" />
+
+									
+					
+					<p:outputLabel value="Usuario" for="usuario" />
+					<p:inputText id="usuario" value="#{funcionarioBean.funcionario.usuario}"
+						required="true" requiredMessage="Usuario obrigatorio">
+						<f:attribute name="type" value="email" />
+						<f:passThroughAttribute name="placeholder" value="Email" />
+						<f:validateRegex pattern=".+@.+" />
+						<f:ajax event="blur" render="messageUsuario" />
+					</p:inputText>
+					<p:message for="usuario" id="messageUsuario" />
+
+					<p:outputLabel value="Senha" for="senha" />
+					<p:password id="senha" value="#{funcionarioBean.funcionario.senha}" feedback="true" 
+					required="true" requiredMessage="senha obrigatoria">
+					<f:passThroughAttribute name="type" value="Password" />
+						<f:ajax event="blur" render="mensageSenha" /></p:password>
+					<p:message for="senha" id="messageSenha" />
+
+					
+
+				</h:panelGrid>
+			</p:fieldset>
+
+			<p:commandButton value="Gravar" action="#{funcionarioBean.gravar}"
+				process="@form"
+				update="@form :tabelaCadastroFuncionario:tabelaFuncionarios">
+
+			</p:commandButton>
+
+		</h:form>
+
+<br/>
+<br/>
+
+		<h:form id="tabelaCadastroFuncionario">
+			<p:fieldset legend ="Produtos já cadastrados">
+
+				<p:dataTable id="tabelaFuncionarios"
+					value="#{funcionarioBean.funcionarios}" var="funcionario">
+
+					<p:column>
+						<f:facet name="header">Id</f:facet>
+						<h:outputText value="#{funcionario.id}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{funcionario.nome}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">CPF</f:facet>
+						<h:outputText value="#{funcionario.cpf}">
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Usuario</f:facet>
+						<h:outputText value="#{funcionario.usuario}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Alterar</f:facet>
+						<p:commandLink value="alterar"
+							action="#{funcionarioBean.carrega(funcionario)}"
+							update=":funcionario" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandLink value="remover" process="@form"
+							action="#{funcionarioBean.remover(funcionario)}" 
+							update="@form" />
+					</p:column>
+
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>
+
+</html>

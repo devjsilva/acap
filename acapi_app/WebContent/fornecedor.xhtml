@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template2.xhtml">
+	
+	<ui:define name="titulo">
+		Novo Fornecedor
+	</ui:define>
+	<ui:define name="conteudo">
+
+		<h:form id="fornecedor">
+			<p:messages globalOnly="true" />
+			<p:fieldset legend="Dados do Produto">
+				<h:panelGrid columns="3">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{fornecedorBean.fornecedor.nome}"
+						required="true" requiredMessage="Nome obrigatorio!!!"
+						validatorMessage="O nome do produto não pode ultrapassar 40 caracteres">
+						<f:validateLength maximum="40" />
+						<f:ajax event="blur" render="mensagensNome" />
+					</p:inputText>
+
+					<p:message for="nome" id="messageNome" />
+
+
+					<p:outputLabel value="Descricao:" for="descricao" />
+					<p:inputText id="descricao"
+						value="#{fornecedorBean.fornecedor.descricao}" required="true"
+						requiredMessage="Descrição obrigatoria"
+						validatorMessage="A descrição não pode ultrapassar 40 caracteres, e nem ficar menor que 5 caracteres">
+						<f:validateLength maximum="40" minimum="5" />
+						<f:ajax render="messageDescricao" event="blur" />
+					</p:inputText>
+
+					<p:message for="descricao" id="messageDescricao" />
+
+					<p:outputLabel value="CNPJ" for="cnpj" />
+					<p:inputMask id="cnpj" value="#{fornecedorBean.fornecedor.CNPJ}"
+						required="true" requiredMessage="CNPJ obrigatorio"
+						validatorMessage="O CNPJ tem que ter  14 caracteres"  mask="99.999.999/9999-99">
+						<f:validateLength maximum="18" minimum="18" />
+						<f:ajax event="blur" render="messageCnpj" />
+					</p:inputMask>
+
+					<p:message for="cnpj" id="messageCnpj" />
+
+				</h:panelGrid>
+			</p:fieldset>
+
+
+
+			<p:commandButton value="Gravar" action="#{fornecedorBean.gravar}"
+				process="@form"
+				update="@form :tabelaCadastroFornecedor:tabelaFornecedores" />
+		</h:form>
+
+		<br />
+		<br />
+
+		<h:form id="tabelaCadastroFornecedor">
+			<p:fieldset legend ="Produtos já cadastrados">
+
+				<p:dataTable id="tabelaFornecedores"
+					value="#{fornecedorBean.fornecedores}" var="fornecedor">
+
+					<p:column sortBy="#{fornecedor.id}" filterBy="#{fornecedor.id}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Id</f:facet>
+						<h:outputText value="#{fornecedor.id}" />
+					</p:column>
+
+					<p:column sortBy="#{fornecedor.nome}" filterBy="#{fornecedor.nome}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{fornecedor.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{fornecedor.CNPJ}" filterBy="#{fornecedor.CNPJ}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">CNPJ</f:facet>
+						<h:outputText value="#{fornecedor.CNPJ}">
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{fornecedor.descricao}" filterBy="#{fornecedor.descricao}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Descrição</f:facet>
+						<h:outputText value="#{fornecedor.descricao}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Alterar</f:facet>
+						<p:commandLink value="alterar"
+							action="#{fornecedorBean.carrega(fornecedor)}"
+							update=":fornecedor" />
+					</p:column>
+					
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>							
+							<p:commandLink value="remover" process="@form"
+							action="#{fornecedorBean.remover(fornecedor)}" 
+							update="@form" />
+					</p:column>
+
+
+				</p:dataTable>
+				</p:fieldset>
+		</h:form>
+	</ui:define>
+	<ui:define name="texto">
+  Cadastro dos Fornecedores
+</ui:define>
+
+</ui:composition>
+
+</html>

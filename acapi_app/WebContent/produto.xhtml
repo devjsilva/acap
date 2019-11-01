@@ -1,0 +1,202 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template2.xhtml">
+
+
+
+	<ui:define name="titulo">
+		Novo Produto
+	</ui:define>
+	<ui:define name="conteudo">
+		<br />
+
+		<h:form id="produto">
+
+			<p:messages globalOnly="true" />
+			<p:fieldset legend="Dados do Produto">
+
+				<h:panelGrid columns="3">
+
+					<p:outputLabel value="Nome:" for="nome" />
+					<p:inputText id="nome" value="#{produtoBean.produto.nome}"
+						required="true" requiredMessage="Nome obrigatorio"
+						validatorMessage="O nome do produto não pode ultrapassar 40 caracteres">
+						<f:validateLength maximum="40" />
+						<f:ajax event="blur" render="messageNome" />
+					</p:inputText>
+
+					<p:message for="nome" id="messageNome" />
+
+
+
+					<p:outputLabel value="Descricao:" for="descricao" />
+					<p:inputText id="descricao"
+						value="#{produtoBean.produto.descricao}" required="true"
+						requiredMessage="Descrição obrigatoria"
+						validatorMessage="A descrição não pode ultrapassar 40 caracteres, e nem ficar menor que 5 caracteres">
+						<f:validateLength maximum="40" minimum="5" />
+						<f:ajax render="messageDescricao" event="blur" />
+					</p:inputText>
+
+					<p:message for="descricao" id="messageDescricao" />
+
+					<p:outputLabel value="Preço:" for="preco" />
+					<p:inputText id="preco" value="#{produtoBean.produto.preco}"
+						validator="#{produtoBean.validaPreco}" required="true">
+						<f:ajax event="blur" render="messagePreco" />
+					</p:inputText>
+
+					<p:message for="preco" id="messagePreco" />
+					
+					
+					
+					<p:outputLabel value="Qtd:" for="qtd" />
+					<p:inputText id="qtd" value="#{produtoBean.produto.qtd}"
+						validator="#{produtoBean.validaQtd}" required="true">
+						<f:ajax event="blur" render="messageQtd" />
+					</p:inputText>
+
+					<p:message for="qtd" id="messageQtd" />
+
+					<p:outputLabel value="Data de vencimento" for="data" />
+					<p:calendar id="data"
+						value="#{produtoBean.produto.dataValidade.time}"
+						pattern="dd/MM/yyyy" mask="true" timeZone="America/Sao_Paulo" />
+
+
+
+
+					<p:message for="data" id="messageData" />
+				</h:panelGrid>
+				<br />
+
+
+
+				<h:panelGrid columns="2">
+
+					<p:outputLabel value="Selecione a Categoria:" for="categoria" />
+					<p:selectOneMenu value="#{produtoBean.idCategoria}" id="categoria">
+						<f:selectItems value="#{produtoBean.categorias}" var="categoria"
+							itemLabel="#{categoria.tipo}" itemValue="#{categoria.id}" />
+					</p:selectOneMenu>
+
+
+
+					<p:outputLabel value="Selecione o Fornecedor:" for="fornecedor" />
+					<p:selectOneMenu value="#{produtoBean.idFornecedor}"
+						id="fornecedor">
+						<f:selectItems value="#{produtoBean.fornecedores}"
+							var="fornecedor" itemLabel="#{fornecedor.nome}"
+							itemValue="#{fornecedor.id}" />
+					</p:selectOneMenu>
+					<br />
+
+
+				</h:panelGrid>
+			</p:fieldset>
+
+
+
+
+
+			<p:commandButton value="Gravar" action="#{produtoBean.gravar}"
+				process="@form" update="@form :tabelaFormProdutos:tabelaProdutos"  />
+
+
+		</h:form>
+		<br />
+		<br />
+
+		<h:form id="tabelaFormProdutos">
+			<p:fieldset legend="Produtos já cadastrados">
+
+				<p:dataTable id="tabelaProdutos" value="#{produtoBean.produtos}"
+					var="produto" paginator="true" rows="10">
+
+					<p:column sortBy="#{produto.id}" filterBy="#{produto.id}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Id</f:facet>
+						<h:outputText value="#{produto.id}" />
+					</p:column>
+
+					<p:column sortBy="#{produto.nome}" filterBy="#{produto.nome}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{produto.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{produto.preco}" filterBy="#{produto.preco}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Preço</f:facet>
+						<h:outputText value="#{produto.preco}">
+							<f:convertNumber type="currecy" pattern="R$ #0.00"
+								currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{produto.qtd}" filterBy="#{produto.qtd}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Qtd</f:facet>
+						<h:outputText value="#{produto.qtd}">
+						</h:outputText>
+					</p:column>
+
+					<p:column sortBy="#{produto.fornecedor.nome}"
+						filterBy="#{produto.fornecedor.nome}" filterMatchMode="startsWith">
+						<f:facet name="header">Fornecedor</f:facet>
+						<h:outputText value="#{produto.fornecedor.nome}" />
+					</p:column>
+
+					<p:column  sortBy="#{produto.tipo.tipo}"
+						filterBy="#{produto.tipo.tipo}" filterMatchMode="startsWith">
+						<f:facet name="header">Tipo</f:facet>
+						<h:outputText value="#{produto.tipo.tipo}" />
+					</p:column>
+
+					<p:column sortBy="#{produto.dataValidade.time}"
+						filterBy="#{produto.dataValidade.time}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Data de validade</f:facet>
+						<h:outputText value="#{produto.dataValidade.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Descrição</f:facet>
+						<h:outputText value="#{produto.descricao}" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Alterar</f:facet>
+						<p:commandLink value="alterar"
+							action="#{produtoBean.carrega(produto)}"
+							update=":produto" />
+					</p:column>
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandLink value="remover" process="@form"
+							action="#{produtoBean.remover(produto)}" 
+							update="@form" />
+					</p:column>
+
+
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+		<br />
+		<p:chart type="bar" model="#{vendasBean.vendasModel}" style="height:300px"/>
+	</ui:define>
+
+
+</ui:composition>
+
+</html>

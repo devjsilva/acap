@@ -1,0 +1,170 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets">
+
+<ui:composition template="_template2.xhtml">
+
+
+
+	<ui:define name="titulo">
+		Vendas
+	</ui:define>
+	<ui:define name="conteudo">
+		<br />
+
+		<h:form id="caixa">
+
+			<p:messages globalOnly="true" />
+
+			<h:panelGrid columns="3">
+
+				<p:outputLabel value="Codigo do produto" for="codigo"
+					style=" font-size: 150% !important;" />
+				<p:inputText id="codigo" value="#{caixaBean.idProduto}" required="true"
+					style=" font-size: 200% !important;">
+					<f:ajax event="blur" render="messageCodigo" />
+				</p:inputText>
+
+				<p:message for="codigo" id="messageCodigo" />
+
+				<p:outputLabel value="Qtd" for="qtd"
+					style=" font-size: 150% !important;" />
+				<p:inputText id="qtd" value="#{caixaBean.quantidade}"
+					required="true" style=" font-size: 200% !important;">
+					<f:ajax event="blur" render="messageQtd" />
+				</p:inputText>
+
+				<p:message for="qtd" id="messageQtd" />
+
+
+			</h:panelGrid>
+			<br />
+			<p:commandButton value="Gravar" action="#{caixaBean.gravar}"
+				process="@form"
+				update="@form :precofinal :tabelaFormProdutos:tabelaProdutos" />
+			<br />
+			<br />
+		</h:form>
+
+
+
+		<h:form id="carrinhoForm">
+			<p:outputLabel value="Codigo do carrinho" for="codigoCarrinho"
+				style=" font-size: 150% !important;" />
+			<p:inputText id="codigoCarrinho" value="#{caixaBean.idCarrinho}"
+				required="true" style=" font-size: 200% !important;">
+				<f:ajax event="blur" render="messageCarrinho" />
+			</p:inputText>
+
+
+
+			<p:message for="codigoCarrinho" id="messageCarrinho" />
+
+			<br />
+			<p:commandButton value="Insirir um carrinho"
+				action="#{caixaBean.gravarCarrinho}" process="@form"
+				update="@form  :caixa :precofinal :tabelaFormProdutos:tabelaProdutos" />
+			<br />
+			<br />
+		</h:form>
+
+		<h:form id="precofinal">
+			<p:inputText id="valorFinal" disabled="true"
+				value="#{caixaBean.preçoFinal}" size="50"
+				style=" font-size: 220% !important;">
+				<f:convertNumber type="currecy" pattern="R$ #0.00"
+					currencySymbol="R$" locale="pt_BR" />
+			</p:inputText>
+			<br />
+			<br />
+
+		</h:form>
+
+		<h:form>
+			<p:growl id="message" showDetail="true" />
+
+			<p:commandButton value="Confirmar compra" 
+				update=":caixa :precofinal :tabelaFormProdutos:tabelaProdutos" action="#{caixaBean.finalizarCompra}" >
+				<p:confirm header="Confirmação" message="Você tem certeza?"
+					icon="pi pi-exclamation-triangle" style=" font-size: 220% !important;" />
+			</p:commandButton>
+
+			<p:confirmDialog global="true" showEffect="fade" hideEffect="fade">
+			
+				<p:commandButton value="Sim" type="button" 
+					styleClass="ui-confirmdialog-yes" icon="pi pi-check" />
+				
+				<p:commandButton value="Não" type="button"
+					styleClass="ui-confirmdialog-no" icon="pi pi-times" />
+			</p:confirmDialog>
+		</h:form>
+
+		<br />
+		<br />
+
+
+		<h:form id="tabelaFormProdutos">
+
+
+			<p:fieldset legend="Produtos no carrinho">
+
+				<p:dataTable id="tabelaProdutos" value="#{caixaBean.produtos}"
+					var="produto" paginator="true" rows="10">
+
+					<p:column sortBy="#{produto.id}" filterBy="#{produto.id}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Id</f:facet>
+						<h:outputText value="#{produto.id}" />
+					</p:column>
+
+					<p:column sortBy="#{produto.nome}" filterBy="#{produto.nome}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Nome</f:facet>
+						<h:outputText value="#{produto.nome}" />
+					</p:column>
+
+					<p:column sortBy="#{produto.preco}" filterBy="#{produto.preco}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Preço</f:facet>
+						<h:outputText value="#{produto.preco}">
+							<f:convertNumber type="currecy" pattern="R$ #0.00"
+								currencySymbol="R$" locale="pt_BR" />
+						</h:outputText>
+					</p:column>
+
+
+
+
+					<p:column sortBy="#{produto.dataValidade.time}"
+						filterBy="#{produto.dataValidade.time}"
+						filterMatchMode="startsWith">
+						<f:facet name="header">Data de validade</f:facet>
+						<h:outputText value="#{produto.dataValidade.time}">
+							<f:convertDateTime pattern="dd/MM/yyyy"
+								timeZone="America/Sao_Paulo" />
+						</h:outputText>
+					</p:column>
+
+
+					<p:column>
+						<f:facet name="header">Remover</f:facet>
+						<p:commandLink value="remover" process="@form"
+							action="#{caixaBean.remover(produto)}" update="@form :precofinal" />
+
+					</p:column>
+
+
+				</p:dataTable>
+			</p:fieldset>
+		</h:form>
+
+	</ui:define>
+
+
+</ui:composition>
+
+</html>

@@ -16,7 +16,14 @@ public class Funcionario {
 	private String cpf;
 	private String usuario;
 	private String senha;
+	private String nivelAcesso;
 	
+	public String getNivelAcesso() {
+		return nivelAcesso;
+	}
+	public void setNivelAcesso(String nivelAcesso) {
+		this.nivelAcesso = nivelAcesso;
+	}
 	public Integer getId() {
 		return id;
 	}

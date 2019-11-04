@@ -19,16 +19,58 @@
 		<h:form id="caixa">
 
 			<p:messages globalOnly="true" />
-			
-			<p:commandButton value="Inserir carrinho" action="#{caixaBean.adicionar}"
+
+			<h:panelGrid columns="3">
+
+				<p:outputLabel value="Codigo do produto" for="codigo"
+					style=" font-size: 150% !important;" />
+				<p:inputText id="codigo" value="#{caixaBean.idProduto}" required="true"
+					style=" font-size: 200% !important;">
+					<f:ajax event="blur" render="messageCodigo" />
+				</p:inputText>
+
+				<p:message for="codigo" id="messageCodigo" />
+
+				<p:outputLabel value="Qtd" for="qtd"
+					style=" font-size: 150% !important;" />
+				<p:inputText id="qtd" value="#{caixaBean.quantidade}"
+					required="true" style=" font-size: 200% !important;">
+					<f:ajax event="blur" render="messageQtd" />
+				</p:inputText>
+
+				<p:message for="qtd" id="messageQtd" />
+
+
+			</h:panelGrid>
+			<br />
+			<p:commandButton value="Gravar" action="#{caixaBean.gravar}"
 				process="@form"
-				update="@form :precofinal :tabelaFormProdutos:tabelaProdutos" style="font-size:30px;margin-left:32%;margin-bottom:10px;" />
+				update="@form :precofinal :tabelaFormProdutos:tabelaProdutos" />
 			<br />
 			<br />
 		</h:form>
 
 
 
+		<h:form id="carrinhoForm">
+			<p:outputLabel value="Codigo do carrinho" for="codigoCarrinho"
+				style=" font-size: 150% !important;" />
+			<p:inputText id="codigoCarrinho" value="#{caixaBean.idCarrinho}"
+				required="true" style=" font-size: 200% !important;">
+				<f:ajax event="blur" render="messageCarrinho" />
+			</p:inputText>
+
+
+
+			<p:message for="codigoCarrinho" id="messageCarrinho" />
+
+			<br />
+			<p:commandButton value="Insirir um carrinho"
+				action="#{caixaBean.gravarCarrinho}" process="@form"
+				update="@form  :caixa :precofinal :tabelaFormProdutos:tabelaProdutos" />
+			<br />
+			<br />
+		</h:form>
 
 		<h:form id="precofinal">
 			<p:inputText id="valorFinal" disabled="true"
@@ -68,7 +110,7 @@
 		<h:form id="tabelaFormProdutos">
 
 
-			<p:fieldset legend="Produtos no carrinho" >
+			<p:fieldset legend="Produtos no carrinho">
 
 				<p:dataTable id="tabelaProdutos" value="#{caixaBean.produtos}"
 					var="produto" paginator="true" rows="10">
